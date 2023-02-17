@@ -26,7 +26,20 @@ function addData(e){
 
     itemList.appendChild(li);
 
-    localStorage.setItem('userDetails',['Name:',myName.value,'Email:',myEmail.value]);
+    localStorage.setItem('user',myName.value);
+
+    let user = {
+        'name':myName.value ,
+        'email': myEmail.value ,
+        'phone' : phone.value,
+    }
+
+    userString = JSON.stringify(user);
+
+    localStorage.setItem('userDetails',userString)
+
+    let userObj = JSON.parse(userString)
+    console.log(userObj)
 
 }
 
