@@ -38,8 +38,10 @@ function addData(e){
 
     localStorage.setItem('userDetails',userString)
 
-    let userObj = JSON.parse(userString)
-    console.log(userObj)
+    // let userObj = JSON.parse(userString)
+    // console.log(userObj)
+
+    localStorage.setItem(myEmail.value,userString)
 
 }
 
