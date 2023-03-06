@@ -15,6 +15,8 @@ itemList.addEventListener('click', removeItem1);
 function addData(e){
     e.preventDefault();
 
+    
+
     if (myName.value === '' || myEmail.value === ''){
         msg.classList.add('error');
         // msg.innerHTML = 'Please enter all feilds';
@@ -25,43 +27,54 @@ function addData(e){
         console.log('success')
     }
 
-    const li = document.createElement('li');
-    li.appendChild(document.createTextNode(myName.value));
-
-    var del = document.createElement('button');
-    del.className = 'li_btn';
-    del.appendChild(document.createTextNode('delete'));
-    li.appendChild(del);
-
-    var edit = document.createElement('button');
-    edit.className = 'edit-btn';
-    li.appendChild(document.createTextNode('edit'));
-    li.appendChild(edit);
-
-    itemList.appendChild(li);
-
-    
-    
-
-    // localStorage.setItem('user',myName.value);
-
     let user = {
         'name':myName.value ,
         'email': myEmail.value ,
         'phone' : phone.value,
     }
-    var a = 0
-    axios.post('https://crudcrud.com/api/d38efdc648e5462cb41180ae7f1d747e/userDetails',user)
-               .then(e=>{a=e.data._id,console.log(e.data._id)})
-               .catch(e=>{console.log(e)})
-    
-    
-               
-               
-    
 
 
 
+     // post
+     var a = 0
+     axios.post('https://crudcrud.com/api/d38efdc648e5462cb41180ae7f1d747e/userDetails',user)
+                .then(e=>{a=e.data._id,console.log(e)})
+                .catch(e=>{console.log(e)})
+     
+     // get
+     axios.get('https://crudcrud.com/api/d38efdc648e5462cb41180ae7f1d747e/userDetails')
+     .then(response=>{
+      console.log(response)
+      for(var i = 0;i<response.data.length;i++){
+          showUserDetails(response.data[i])
+      }
+    })
+     .catch(e=>{console.log(e)})
+
+  
+
+
+    function showUserDetails(user){
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(user.name + '--' + user.email +'--'+ user.phone+'--'));
+    
+        var del = document.createElement('button');
+        del.className = 'li_btn';
+        del.appendChild(document.createTextNode('delete'));
+        li.appendChild(del);
+    
+        var edit = document.createElement('button');
+        edit.className = 'edit-btn';
+        li.appendChild(document.createTextNode('edit'));
+        li.appendChild(edit);
+    
+        itemList.appendChild(li);
+    }
+    showUserDetails()
+   
+
+
+   
 
     // ------------------------converting object to string
 
