@@ -27,7 +27,7 @@ function addData(e){
         console.log('success')
     }
 
-    let user = {
+    let user1 = {
         'name':myName.value ,
         'email': myEmail.value ,
         'phone' : phone.value,
@@ -37,15 +37,16 @@ function addData(e){
 
      // post
      var a = 0
-     axios.post('https://crudcrud.com/api/d38efdc648e5462cb41180ae7f1d747e/userDetails',user)
+     axios.post('https://crudcrud.com/api/2214652e01f54ab9b124e7e97953a379/UserDetails',user1)
                 .then(e=>{a=e.data._id,console.log(e)})
                 .catch(e=>{console.log(e)})
      
      // get
-     axios.get('https://crudcrud.com/api/d38efdc648e5462cb41180ae7f1d747e/userDetails')
+     axios.get('https://crudcrud.com/api/2214652e01f54ab9b124e7e97953a379/UserDetails')
      .then(response=>{
       console.log(response)
       for(var i = 0;i<response.data.length;i++){
+        
           showUserDetails(response.data[i])
       }
     })
@@ -56,7 +57,7 @@ function addData(e){
 
     function showUserDetails(user){
         const li = document.createElement('li');
-        li.appendChild(document.createTextNode(user.name + '--' + user.email +'--'+ user.phone+'--'));
+        li.appendChild(document.createTextNode(user.name + '--' + user.email +'--'+ user.phone+'--' +user._id +'--'));
     
         var del = document.createElement('button');
         del.className = 'li_btn';
@@ -97,19 +98,19 @@ function addData(e){
 
 function removeItem(event){
     if(event.target.classList.contains('li_btn')){
-      
         var li = event.target.parentElement;
-        itemList.removeChild(li);
-        var userName=document.getElementById('name').value;
-        var userEmail=document.getElementById('email').value;
-        var userPhone=document.getElementById('phone').value;
-        let myObj ={
-            name:userName,
-            email:userEmail ,
-            phone:userPhone   
-        }
-        let myObj_serialized=JSON.stringify(myObj);
-        localStorage.removeItem(myObj.email,myObj_serialized)
+        var data = li.textContent;
+        data = data.split('--')
+        const id = data[3]
+        console.log(id)
+        
+     axios.delete(`https://crudcrud.com/api/2214652e01f54ab9b124e7e97953a379/UserDetails/${id}`)
+     .then(response=>{
+       console.log(response)
+    })
+     .catch(e=>{console.log(e)})
+
+     itemList.removeChild(li);
       
     }
 
