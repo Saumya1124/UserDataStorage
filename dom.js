@@ -10,7 +10,7 @@ myForm.addEventListener('submit',addData);
 
 itemList.addEventListener('click', removeItem);
 
-itemList.addEventListener('click', removeItem1);
+itemList.addEventListener('click', editData);
 
 function addData(e){
     e.preventDefault();
@@ -37,12 +37,12 @@ function addData(e){
 
      // post
      var a = 0
-     axios.post('https://crudcrud.com/api/2214652e01f54ab9b124e7e97953a379/UserDetails',user1)
+     axios.post('https://crudcrud.com/api/d85b4ef4a0354447b5962899e694cbe3/UserDetails',user1)
                 .then(e=>{a=e.data._id,console.log(e)})
                 .catch(e=>{console.log(e)})
      
      // get
-     axios.get('https://crudcrud.com/api/2214652e01f54ab9b124e7e97953a379/UserDetails')
+     axios.get('https://crudcrud.com/api/d85b4ef4a0354447b5962899e694cbe3/UserDetails')
      .then(response=>{
       console.log(response)
       for(var i = 0;i<response.data.length;i++){
@@ -65,7 +65,7 @@ function addData(e){
         li.appendChild(del);
     
         var edit = document.createElement('button');
-        edit.className = 'edit-btn';
+        edit.className = 'edit_btn';
         li.appendChild(document.createTextNode('edit'));
         li.appendChild(edit);
     
@@ -104,7 +104,7 @@ function removeItem(event){
         const id = data[3]
         console.log(id)
         
-     axios.delete(`https://crudcrud.com/api/2214652e01f54ab9b124e7e97953a379/UserDetails/${id}`)
+     axios.delete(`https://crudcrud.com/api/d85b4ef4a0354447b5962899e694cbe3/UserDetails/${id}`)
      .then(response=>{
        console.log(response)
     })
@@ -118,17 +118,56 @@ function removeItem(event){
 
   }
 
-  function removeItem1(event){
-    if(event.target.classList.contains('edit-btn')){
 
-        // myName = localStorage.getItem('name')
-      
-        var li = event.target.parentElement;
-        itemList.removeChild(li);
+  function editData(event){
+    if (event.target.classList.contains('edit_btn')){
+        let li = event.target.parentElement;
+        let data = li.textContent;
+        data = data.split('--') ;
+        myName.value = data[0]
+        myEmail.value = data[1]
+        phone.value = data[2]
+        const id = data[3]
+
+        let obj1 = {
+            name :myName.value,
+            email:myEmail.value,
+            phone : phone.value
+        }
+
+        axios.put(`https://crudcrud.com/api/d85b4ef4a0354447b5962899e694cbe3/UserDetails/${id}`,obj1)
+     .then(response=>{
+       console.log(response)
+    })
+     .catch(e=>{console.log(e)})
+     .then(
+        axios.get(`https://crudcrud.com/api/d85b4ef4a0354447b5962899e694cbe3/UserDetails/${id}`)
+     .then(response=>{
+      console.log(response)
+      for(var i = 0;i<response.data.length;i++){
         
-        
+          showUserDetails(response.data[i])
+      }
+    })
+     .catch(e=>{console.log(e)})
+     )
+
+
+     itemList.removeChild(li);
       
     }
-  }
+    
 
 
+
+        
+        
+
+        // removing from dom
+        itemList.removeChild(li)
+
+       
+
+
+
+    }
